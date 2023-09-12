@@ -11,21 +11,13 @@ class Solution {
        for(int i=24;i>=0;i--)
        {
            if(fre[i]==0) break;
-           if(fre[i]>0 && fre[i+1]==0)
+           
+           if(fre[i]>=fre[i+1])
            {
-               ans+=fre[i];
-               fre[i] = 0;
-               continue;
-           }
-           if(fre[i]==fre[i+1])
-           {
-               fre[i] -= 1;
-               ans++;
-           }
-           else if(fre[i]>fre[i+1])
-           {
-               ans+=(fre[i]-fre[i+1]+1);
+               int val = fre[i];
                fre[i] = Math.max(0,fre[i+1]-1);
+               ans+=(val-fre[i]);
+               
            }
            
        }
