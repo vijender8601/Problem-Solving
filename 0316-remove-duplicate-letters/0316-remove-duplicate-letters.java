@@ -1,35 +1,30 @@
 class Solution {
     public String removeDuplicateLetters(String s) {
-        Map<Character,TreeSet<Integer>> map = new HashMap<>();
-        int n = s.length(),cnt = 0;
+        int n = s.length();
+        int vis[] = new int[26];
+        int ind[] = new int[26];
+        for(int i=0;i<n;i++) ind[s.charAt(i)-'a'] = i;
+        Stack<Character>st = new Stack<>();
         for(int i=0;i<n;i++)
         {
-            if(!map.containsKey(s.charAt(i))) {map.put(s.charAt(i),new TreeSet<>());}
-            map.get(s.charAt(i)).add(i);
-        }
-
-        cnt = map.size();
-
-        StringBuilder sb = new StringBuilder();
-        int ind = -1;
-        while(cnt>0){
-            outer : for(char i='a';i<='z';i++)
+            while(!st.isEmpty() && vis[s.charAt(i)-'a']==0 && st.peek()>=s.charAt(i) && ind[st.peek()-'a']>=i)
             {
-                if(map.containsKey(i)==false) continue;
-                Integer key = map.get(i).ceiling(ind+1);
-                for(char j='a';j<='z';j++)
-                {
-                    if(i==j || map.containsKey(j)==false) continue;
-                    if(map.get(j).ceiling(key)==null) continue outer;
-                }
-                sb.append(i);
-                map.remove(i);
-                ind = key;
-                break;
+                vis[st.pop()-'a']= 0;
             }
-            cnt--;
+            if(vis[s.charAt(i)-'a']==0)
+            {
+                vis[s.charAt(i)-'a'] = 1;
+                st.push(s.charAt(i));
+            }
         }
 
-        return sb.toString();
+        String ans = "";
+        while(!st.isEmpty())
+        {
+            ans=st.pop()+""+ans;
+        }
+
+        return ans;
+
     }
 }
